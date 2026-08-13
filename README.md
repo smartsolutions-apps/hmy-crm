@@ -34,6 +34,7 @@ demo dataset and keeps any edits in your browser only — nothing is lost, nothi
 | **Customers** | Full CRM: contact details, type (retail / wholesale / VIP), source, tags, preferred fragrance family, lifetime value, outstanding balance, order history and a logged conversation history. |
 | **Orders** | Line-item orders with VAT, shipping, discounts, payment status and balance. Wholesale customers automatically get wholesale pricing. Printable invoice view. |
 | **Suppliers & Purchase Orders** | Who supplies what, on what terms, how much you have bought and what you still owe. Imports carry shipping and customs. |
+| **Gift Occasions** | The merchandising engine — occasion → who it is for → their age → which perfumes. Includes a gift finder, a coverage grid showing which squares are still empty, and a JSON feed the website consumes. See below. |
 | **Marketing** | Campaigns by channel with budget, spend, impressions, clicks, leads, orders and revenue — giving ROAS, cost per lead and cost per order. Plus a lead pipeline. |
 | **Accounting** | P&L (revenue → COGS → gross profit → production losses → opex → net profit), VAT collected, expenses by category, cash flow, receivables and payables. |
 | **Reports** | Six cuts of the data — sales, product profitability, production efficiency, customer value, inventory position, marketing return — each exportable. |
@@ -72,12 +73,59 @@ absolute is quietly costing you more than anything else.
 
 ---
 
+## How gift recommendations work
+
+The pyramid is **occasion → audience → age bracket → perfumes**:
+
+- **30 occasions**, from birthdays and weddings to Eid, Ramadan, Mother's Day (21 March,
+  the Arab date), Emirati Women's Day, Diwali and return from Hajj.
+- **Four audiences** — Women, Men, Girls, Boys. Adults and children are separate ladders,
+  so a "10–12" can never appear next to a "40–49".
+- **Age brackets** — children: baby, toddler, child, tween, teen. Adults: 18–29, 30–39,
+  40–49, 50–59, 60+. Adults start at 18 so nobody falls in the gap above the teen bracket.
+- **One rule covers several brackets at once**, otherwise 30 × 4 × 5 = 600 forms to fill.
+
+### When a perfume is worn
+
+Wear context sits on the **product**, not the rule — a scent intrinsically *is* an office
+scent or an evening scent. Tag a bottle once and every gift recommendation inherits it,
+which keeps 600 combinations from becoming 4,200.
+
+Seven contexts: work & office, daytime & casual, evening & going out, formal &
+celebrations, outdoors & beach, **majlis & gatherings**, **mosque & prayer**. The last two
+matter in the Gulf and most systems miss them. Products also carry a season
+(all year / summer / winter) and a sillage (subtle / moderate / strong).
+
+### The gift finder
+
+Three questions — occasion, who, how old — and the answer is grouped by wear context.
+
+It never returns a single lonely bottle. If the curated rules produce fewer than four,
+the catalogue tops the list up by **breadth**: each extra pick is whichever perfume adds
+the most wear contexts not yet covered. So a shopper always sees a work option, a daytime
+option and an evening option, and comes away feeling the house has something for every
+moment. Curated picks are labelled *chosen for this occasion*; top-ups are labelled
+*you might also like*, so the two are never confused.
+
+### Feeding the website
+
+**Export for website** produces JSON keyed occasion → audience → age bracket → products,
+each carrying wear contexts, season, sillage, price and a `hero` flag. The site can build
+"Shop Mother's Day" pages, and day/night/work tabs within them, straight from that file.
+
+The **coverage grid** shows every occasion against every audience. Green means mapped;
+amber means the occasion says that audience matters but nothing is mapped yet. It is at
+82% with 12 squares still open — deliberately, so the gaps are visible.
+
+---
+
 ## The demo data
 
 The app ships with a full, self-consistent year of trading for a fictional Dubai
 perfume house. It is not random noise — the numbers reconcile:
 
 - **47 raw materials**, **12 formulas**, **12 products**, **8 suppliers**
+- **30 gift occasions** with **57 recommendation rules** across audiences and age brackets
 - **394 customers**, **957 orders**, ~**680 logged interactions**
 - **28 production batches**, **15 purchase orders**, **11 campaigns**, **30 leads**, **~85 expenses**
 - Roughly **AED 1.09M revenue**, 55% gross margin, **AED 77k net profit**, 2.5% production loss rate

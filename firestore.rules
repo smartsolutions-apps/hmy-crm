@@ -18,7 +18,8 @@ service cloud.firestore {
       allow read, write: if collection in [
         'materials', 'products', 'formulas', 'batches',
         'customers', 'interactions', 'orders', 'suppliers',
-        'purchases', 'campaigns', 'leads', 'expenses'
+        'purchases', 'campaigns', 'leads', 'expenses',
+        'giftEvents', 'giftRecommendations'
       ];
     }
   }

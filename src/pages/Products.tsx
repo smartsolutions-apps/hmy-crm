@@ -7,6 +7,7 @@ import {
   Select, StatCard, exportCsv, statusTone,
 } from '@/components/ui'
 import { computeProductCost, productMargin, safeDiv, sum } from '@/lib/calc'
+import { WEAR_OCCASIONS, seasonLabelKey, sillageLabelKey, wearLabelKey } from '@/lib/segments'
 import type { Product } from '@/types'
 
 const blankProduct = (): Product => ({
@@ -24,6 +25,9 @@ const blankProduct = (): Product => ({
   reorderLevel: 20,
   status: 'draft',
   launchDate: new Date().toISOString().slice(0, 10),
+  wearOccasions: [],
+  season: 'all',
+  sillage: 'moderate',
 })
 
 export default function Products() {
@@ -271,8 +275,50 @@ export default function Products() {
                 options={(['active', 'draft', 'discontinued'] as const).map((s) => ({ value: s, label: t(`products.status.${s}` as never) }))}
               />
             </Field>
-            <Field label={t('products.launch')} className="sm:col-span-2">
+            <Field label={t('products.launch')}>
               <input type="date" className="input" value={editing.launchDate} onChange={(e) => setEditing({ ...editing, launchDate: e.target.value })} />
+            </Field>
+            <Field label={t('season.title')}>
+              <Select
+                value={editing.season}
+                onChange={(v) => setEditing({ ...editing, season: v as Product['season'] })}
+                options={(['all', 'summer', 'winter'] as const).map((s) => ({ value: s, label: t(seasonLabelKey(s)) }))}
+              />
+            </Field>
+            <Field label={t('sillage.title')}>
+              <Select
+                value={editing.sillage}
+                onChange={(v) => setEditing({ ...editing, sillage: v as Product['sillage'] })}
+                options={(['subtle', 'moderate', 'strong'] as const).map((s) => ({ value: s, label: t(sillageLabelKey(s)) }))}
+              />
+            </Field>
+            <Field label={t('wear.title')} hint={t('wear.hint')} className="sm:col-span-2">
+              <div className="flex flex-wrap gap-2">
+                {WEAR_OCCASIONS.map((w) => {
+                  const on = editing.wearOccasions.includes(w)
+                  return (
+                    <button
+                      key={w}
+                      type="button"
+                      onClick={() =>
+                        setEditing({
+                          ...editing,
+                          wearOccasions: on
+                            ? editing.wearOccasions.filter((x) => x !== w)
+                            : [...editing.wearOccasions, w],
+                        })
+                      }
+                      className={
+                        on
+                          ? 'rounded-lg border border-gold-400 bg-gold-50 text-gold-900 px-3 py-1.5 text-xs font-medium'
+                          : 'rounded-lg border border-ink-200 bg-white text-ink-600 hover:bg-ink-50 px-3 py-1.5 text-xs font-medium'
+                      }
+                    >
+                      {t(wearLabelKey(w))}
+                    </button>
+                  )
+                })}
+              </div>
             </Field>
           </div>
         )}
@@ -294,6 +340,19 @@ export default function Products() {
           <Badge tone="gold">{t(`products.family.${product.family}` as never)}</Badge>
           <Badge tone={statusTone(product.status)}>{t(`products.status.${product.status}` as never)}</Badge>
           <span className="text-xs text-ink-500 tnum">{product.sku} · {product.concentration} · {product.sizeMl} ml</span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-xs text-ink-500 me-1">{t('wear.title')}:</span>
+          {product.wearOccasions.length ? (
+            product.wearOccasions.map((w) => <Badge key={w} tone="blue">{t(wearLabelKey(w))}</Badge>)
+          ) : (
+            <span className="text-xs text-ink-300">—</span>
+          )}
+          <Badge>{t(seasonLabelKey(product.season))}</Badge>
+          <Badge tone={product.sillage === 'strong' ? 'purple' : 'neutral'}>
+            {t(sillageLabelKey(product.sillage))}
+          </Badge>
         </div>
 
         {(lang === 'ar' ? product.descriptionAr : product.descriptionEn) && (

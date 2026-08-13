@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import {
   LayoutDashboard, Package, FlaskConical, Beaker, Factory, Users, ShoppingCart,
   Truck, ClipboardList, Megaphone, Wallet, BarChart3, Settings as SettingsIcon,
-  Menu, X, Languages, Database as DatabaseIcon, CloudOff,
+  Menu, X, Languages, Database as DatabaseIcon, CloudOff, Gift,
 } from 'lucide-react'
 import { useI18n } from '@/i18n'
 import { useData } from '@/store/DataContext'
@@ -42,6 +42,7 @@ const NAV: Array<{ group: TranslationKey; items: Array<{ to: string; key: Transl
     group: 'nav.group.growth',
     items: [
       { to: '/marketing', key: 'nav.marketing', icon: Megaphone },
+      { to: '/events', key: 'nav.events', icon: Gift },
       { to: '/accounting', key: 'nav.accounting', icon: Wallet },
       { to: '/reports', key: 'nav.reports', icon: BarChart3 },
     ],

@@ -75,6 +75,7 @@ const COLLECTIONS = [
   'materials', 'products', 'formulas', 'batches',
   'customers', 'interactions', 'orders', 'suppliers',
   'purchases', 'campaigns', 'leads', 'expenses',
+  'giftEvents', 'giftRecommendations',
 ]
 
 const app = initializeApp(cfg)

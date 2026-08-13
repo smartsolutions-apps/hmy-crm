@@ -14,6 +14,7 @@ import Orders from '@/pages/Orders'
 import Suppliers from '@/pages/Suppliers'
 import Purchases from '@/pages/Purchases'
 import Marketing from '@/pages/Marketing'
+import Events from '@/pages/Events'
 import Accounting from '@/pages/Accounting'
 import Reports from '@/pages/Reports'
 import SettingsPage from '@/pages/Settings'
@@ -50,6 +51,7 @@ export default function App() {
         <Route path="suppliers" element={<Suppliers />} />
         <Route path="purchases" element={<Purchases />} />
         <Route path="marketing" element={<Marketing />} />
+        <Route path="events" element={<Events />} />
         <Route path="accounting" element={<Accounting />} />
         <Route path="reports" element={<Reports />} />
         <Route path="settings" element={<SettingsPage />} />

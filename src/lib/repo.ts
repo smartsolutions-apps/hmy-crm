@@ -22,6 +22,8 @@ export const COLLECTIONS: CollectionName[] = [
   'campaigns',
   'leads',
   'expenses',
+  'giftEvents',
+  'giftRecommendations',
 ]
 
 export const emptyDatabase = (): Database => ({
@@ -37,6 +39,8 @@ export const emptyDatabase = (): Database => ({
   campaigns: [],
   leads: [],
   expenses: [],
+  giftEvents: [],
+  giftRecommendations: [],
 })
 
 const LOCAL_KEY = 'hmy.db'

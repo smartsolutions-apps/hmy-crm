@@ -11,6 +11,8 @@ import type {
   Product,
   ProductionBatch,
   Purchase,
+  GiftEvent,
+  GiftRecommendation,
   Supplier,
 } from '@/types'
 
@@ -357,6 +359,7 @@ export const products: Product[] = [
     family: 'oriental', concentration: 'EDP', sizeMl: 50, formulaId: 'frm-01',
     price: 420, wholesalePrice: 265, stockQty: 138, reorderLevel: 40,
     status: 'active', launchDate: '2025-09-04',
+    wearOccasions: ['evening', 'formal', 'majlis'], season: 'all', sillage: 'strong',
     descriptionEn: 'Assam oud folded into saffron and Bulgarian rose, dried down over amber and cedar. The house signature.',
     descriptionAr: 'عود آسامي مع الزعفران والورد البلغاري، يستقر على العنبر وخشب الأرز. توقيع الدار.',
     topNotes: ['Saffron', 'Pink pepper'], heartNotes: ['Bulgarian rose', 'Frankincense'], baseNotes: ['Assam oud', 'Amber', 'Cedar'],
@@ -366,6 +369,7 @@ export const products: Product[] = [
     family: 'oriental', concentration: 'Parfum', sizeMl: 100, formulaId: 'frm-02',
     price: 780, wholesalePrice: 505, stockQty: 46, reorderLevel: 20,
     status: 'active', launchDate: '2025-11-18',
+    wearOccasions: ['evening', 'formal', 'majlis'], season: 'winter', sillage: 'strong',
     descriptionEn: 'The signature at parfum strength, with Cambodian oud carried through the base. Twelve hours on skin.',
     descriptionAr: 'التوقيع بتركيز البارفان، مع عود كمبودي في القاعدة. يدوم اثنتي عشرة ساعة.',
     topNotes: ['Saffron'], heartNotes: ['Taif rose'], baseNotes: ['Cambodian oud', 'Sandalwood', 'Amber'],
@@ -375,6 +379,7 @@ export const products: Product[] = [
     family: 'floral', concentration: 'EDP', sizeMl: 50, formulaId: 'frm-03',
     price: 385, wholesalePrice: 245, stockQty: 112, reorderLevel: 35,
     status: 'active', launchDate: '2025-10-02',
+    wearOccasions: ['daytime', 'evening', 'formal'], season: 'all', sillage: 'moderate',
     descriptionEn: 'Taif rose at the centre, lifted with pink pepper and softened into clean musk.',
     descriptionAr: 'ورد الطائف في القلب، مع الفلفل الوردي ومسك ناعم.',
     topNotes: ['Pink pepper'], heartNotes: ['Taif rose', 'Geranium', 'Ylang ylang'], baseNotes: ['White musk', 'Sandalwood'],
@@ -384,6 +389,7 @@ export const products: Product[] = [
     family: 'woody', concentration: 'EDP', sizeMl: 100, formulaId: 'frm-04',
     price: 490, wholesalePrice: 315, stockQty: 74, reorderLevel: 25,
     status: 'active', launchDate: '2026-01-15',
+    wearOccasions: ['work', 'daytime', 'evening'], season: 'all', sillage: 'moderate',
     descriptionEn: 'Dry cedar and vetiver over warm skin. Built for the heat rather than against it.',
     descriptionAr: 'أرز جاف ونجيل على بشرة دافئة. صُمم ليناسب الحرّ لا ليقاومه.',
     topNotes: ['Cardamom', 'Pink pepper'], heartNotes: ['Vetiver', 'Patchouli'], baseNotes: ['Cedar', 'Ambroxan', 'Oakmoss'],
@@ -393,6 +399,7 @@ export const products: Product[] = [
     family: 'floral', concentration: 'EDP', sizeMl: 50, formulaId: 'frm-05',
     price: 340, wholesalePrice: 215, stockQty: 96, reorderLevel: 30,
     status: 'active', launchDate: '2025-09-25',
+    wearOccasions: ['evening', 'formal'], season: 'all', sillage: 'moderate',
     descriptionEn: 'Jasmine sambac picked at night, warmed with tonka and vanilla.',
     descriptionAr: 'ياسمين سامباك يُقطف ليلًا، بدفء التونكا والفانيليا.',
     topNotes: ['Bergamot'], heartNotes: ['Jasmine sambac', 'Ylang ylang'], baseNotes: ['Tonka', 'Vanilla', 'Musk'],
@@ -402,6 +409,7 @@ export const products: Product[] = [
     family: 'musk', concentration: 'EDP', sizeMl: 50, formulaId: 'frm-06',
     price: 295, wholesalePrice: 185, stockQty: 187, reorderLevel: 50,
     status: 'active', launchDate: '2025-08-28',
+    wearOccasions: ['work', 'daytime'], season: 'all', sillage: 'subtle',
     descriptionEn: 'Soft white musk, barely there. The one people buy again without thinking.',
     descriptionAr: 'مسك أبيض ناعم وخفيف. العطر الذي يُعاد شراؤه دون تفكير.',
     topNotes: ['Lavender'], heartNotes: ['White musk'], baseNotes: ['Cashmeran', 'Ambroxan'],
@@ -411,6 +419,7 @@ export const products: Product[] = [
     family: 'fresh', concentration: 'EDT', sizeMl: 100, formulaId: 'frm-07',
     price: 260, wholesalePrice: 165, stockQty: 121, reorderLevel: 40,
     status: 'active', launchDate: '2026-03-10',
+    wearOccasions: ['work', 'daytime', 'outdoors'], season: 'summer', sillage: 'subtle',
     descriptionEn: 'Sicilian lemon and bergamot over salt-dry ambroxan. The summer bottle.',
     descriptionAr: 'ليمون صقلي وبرغموت على أمبروكسان مالح. عطر الصيف.',
     topNotes: ['Bergamot', 'Sicilian lemon'], heartNotes: ['Lavender', 'Geranium'], baseNotes: ['Ambroxan', 'Cedar'],
@@ -420,6 +429,7 @@ export const products: Product[] = [
     family: 'oriental', concentration: 'Parfum', sizeMl: 50, formulaId: 'frm-08',
     price: 620, wholesalePrice: 405, stockQty: 58, reorderLevel: 20,
     status: 'active', launchDate: '2025-12-01',
+    wearOccasions: ['formal', 'evening', 'majlis'], season: 'winter', sillage: 'strong',
     descriptionEn: 'Saffron, Taif rose and ambergris around a core of real oud. Our most expensive juice.',
     descriptionAr: 'زعفران وورد طائفي وعنبر حول قلب من العود الحقيقي. أغلى تركيباتنا.',
     topNotes: ['Saffron'], heartNotes: ['Taif rose', 'Frankincense'], baseNotes: ['Cambodian oud', 'Ambergris', 'Amber'],
@@ -429,6 +439,7 @@ export const products: Product[] = [
     family: 'oriental', concentration: 'Oil', sizeMl: 12, formulaId: 'frm-09',
     price: 340, wholesalePrice: 220, stockQty: 84, reorderLevel: 25,
     status: 'active', launchDate: '2025-10-20',
+    wearOccasions: ['prayer', 'majlis', 'formal'], season: 'all', sillage: 'strong',
     descriptionEn: 'Alcohol-free oil attar — oud, sandalwood and amber on a DPG base. Traditional application.',
     descriptionAr: 'عطر زيتي خالٍ من الكحول — عود وصندل وعنبر على أساس DPG.',
     topNotes: ['Saffron'], heartNotes: ['Taif rose'], baseNotes: ['Assam oud', 'Sandalwood', 'Amber'],
@@ -438,6 +449,7 @@ export const products: Product[] = [
     family: 'floral', concentration: 'Mist', sizeMl: 100, formulaId: 'frm-10',
     price: 145, wholesalePrice: 88, stockQty: 243, reorderLevel: 60,
     status: 'active', launchDate: '2026-02-05',
+    wearOccasions: ['daytime', 'outdoors', 'work'], season: 'summer', sillage: 'subtle',
     descriptionEn: 'Light body mist. Jasmine and musk, made to be reapplied through the day.',
     descriptionAr: 'ميست خفيف للجسم. ياسمين ومسك، يُعاد رشّه خلال اليوم.',
     topNotes: ['Bergamot'], heartNotes: ['Jasmine', 'Rose'], baseNotes: ['White musk'],
@@ -447,6 +459,7 @@ export const products: Product[] = [
     family: 'oriental', concentration: 'EDP', sizeMl: 100, formulaId: 'frm-11',
     price: 560, wholesalePrice: 360, stockQty: 39, reorderLevel: 25,
     status: 'active', launchDate: '2025-11-05',
+    wearOccasions: ['evening', 'formal', 'majlis'], season: 'winter', sillage: 'strong',
     descriptionEn: 'Amber, vanilla and tonka pulled dark with patchouli. A winter perfume.',
     descriptionAr: 'عنبر وفانيليا وتونكا مع باتشولي داكن. عطر شتوي.',
     topNotes: ['Cardamom'], heartNotes: ['Amber', 'Patchouli'], baseNotes: ['Vanilla', 'Tonka', 'Ambroxan'],
@@ -456,6 +469,7 @@ export const products: Product[] = [
     family: 'woody', concentration: 'EDT', sizeMl: 50, formulaId: 'frm-12',
     price: 235, wholesalePrice: 150, stockQty: 12, reorderLevel: 30,
     status: 'draft', launchDate: '2026-10-01',
+    wearOccasions: ['daytime', 'outdoors', 'work'], season: 'all', sillage: 'moderate',
     descriptionEn: 'In development — green woody built around sidr and cedar. Not released.',
     descriptionAr: 'قيد التطوير — خشبي أخضر حول السدر والأرز. لم يُطرح بعد.',
     topNotes: ['Sicilian lemon'], heartNotes: ['Geranium', 'Vetiver'], baseNotes: ['Cedar', 'Oakmoss'],
@@ -1016,6 +1030,215 @@ addExpense({ date: dateIn(2, 17), category: 'equipment', description: 'Second fi
 expenses.sort((a, b) => (a.date < b.date ? 1 : -1))
 
 // ===========================================================================
+// GIFT OCCASIONS
+// ===========================================================================
+
+const A_W = { lifeStage: 'adult' as const, gender: 'female' as const } // women
+const A_M = { lifeStage: 'adult' as const, gender: 'male' as const }   // men
+const K_G = { lifeStage: 'kid' as const, gender: 'female' as const }   // girls
+const K_B = { lifeStage: 'kid' as const, gender: 'male' as const }     // boys
+
+type EventSeed = [
+  code: string, en: string, ar: string, cat: GiftEvent['category'],
+  month: number | null, day: number | null, movable: boolean,
+  audiences: GiftEvent['suggestedAudiences'], notes?: string
+]
+
+const eventSeeds: EventSeed[] = [
+  // --- personal milestones (no fixed date) -------------------------------
+  ['BIRTHDAY', 'Birthday', 'عيد ميلاد', 'personal', null, null, false, [A_W, A_M, K_G, K_B],
+    'The steady earner — runs all year. Worth a reminder message from the customer birthday field.'],
+  ['WEDDING', 'Wedding', 'زفاف', 'personal', null, null, false, [A_W, A_M],
+    'Highest basket value of any occasion. Bride and groom sets sell well together.'],
+  ['ENGAGEMENT', 'Engagement', 'خطوبة', 'personal', null, null, false, [A_W, A_M]],
+  ['ANNIVERSARY', 'Wedding anniversary', 'ذكرى الزواج', 'personal', null, null, false, [A_W, A_M]],
+  ['GRADUATION', 'Graduation', 'تخرّج', 'personal', 6, null, true, [A_W, A_M, K_G, K_B],
+    'Clusters around June. School leavers and university both.'],
+  ['NEWBABY', 'New baby', 'مولود جديد', 'personal', null, null, false, [A_W, K_G, K_B],
+    'The gift usually goes to the mother, not the baby. Keep the juice light.'],
+  ['BABYSHOWER', 'Baby shower', 'حفل استقبال المولود', 'personal', null, null, false, [A_W]],
+  ['NEWJOB', 'New job or promotion', 'وظيفة جديدة أو ترقية', 'personal', null, null, false, [A_W, A_M]],
+  ['HOUSEWARM', 'Housewarming', 'بيت جديد', 'personal', null, null, false, [A_W, A_M]],
+  ['RETIREMENT', 'Retirement', 'تقاعد', 'personal', null, null, false, [A_W, A_M]],
+  ['GETWELL', 'Get well soon', 'سلامتك', 'personal', null, null, false, [A_W, A_M]],
+  ['THANKYOU', 'Thank you', 'شكرًا', 'personal', null, null, false, [A_W, A_M]],
+  ['FAREWELL', 'Farewell', 'وداع', 'personal', null, null, false, [A_W, A_M],
+    'Big in the UAE — people leave the country and colleagues club together for a gift.'],
+
+  // --- religious ---------------------------------------------------------
+  ['EIDFITR', 'Eid Al Fitr', 'عيد الفطر', 'religious', null, null, true, [A_W, A_M, K_G, K_B],
+    'The single biggest gifting week of the year. Build stock two months ahead.'],
+  ['EIDADHA', 'Eid Al Adha', 'عيد الأضحى', 'religious', null, null, true, [A_W, A_M, K_G, K_B]],
+  ['RAMADAN', 'Ramadan', 'رمضان', 'religious', null, null, true, [A_W, A_M],
+    'Gifting starts before the month, not during it. Oud and bakhoor lead.'],
+  ['HAJJ', 'Return from Hajj or Umrah', 'مبروك الحج والعمرة', 'religious', null, null, true, [A_W, A_M],
+    'Strong Gulf tradition — pilgrims are welcomed home with oud and attar. Often overlooked.'],
+  ['DIWALI', 'Diwali', 'ديوالي', 'religious', 10, null, true, [A_W, A_M],
+    'Large Indian community in the UAE. Gift sets, not single bottles.'],
+  ['CHRISTMAS', 'Christmas', 'عيد الميلاد', 'religious', 12, 25, false, [A_W, A_M, K_G, K_B]],
+
+  // --- national & international -----------------------------------------
+  ['MOTHERSDAY', "Mother's Day", 'عيد الأم', 'national', 3, 21, false, [A_W],
+    'Arab Mother\'s Day is 21 March, not the Western date. Women only, and rarely under thirty.'],
+  ['FATHERSDAY', "Father's Day", 'عيد الأب', 'national', 6, 21, false, [A_M]],
+  ['VALENTINE', "Valentine's Day", 'عيد الحب', 'national', 2, 14, false, [A_W, A_M],
+    'Skews young. Pair it with gift wrap and a card.'],
+  ['WOMENSDAY', "International Women's Day", 'اليوم العالمي للمرأة', 'national', 3, 8, false, [A_W]],
+  ['EMWOMEN', 'Emirati Women\'s Day', 'يوم المرأة الإماراتية', 'national', 8, 28, false, [A_W],
+    'Corporate buyers order in bulk for female staff.'],
+  ['NATIONALDAY', 'UAE National Day', 'اليوم الوطني للإمارات', 'national', 12, 2, false, [A_W, A_M],
+    'Corporate gifting spikes. Consider a limited edition in national colours.'],
+  ['NEWYEAR', 'New Year', 'رأس السنة', 'seasonal', 1, 1, false, [A_W, A_M]],
+  ['TEACHERSDAY', "Teacher's Day", 'يوم المعلم', 'seasonal', 10, 5, false, [A_W, A_M],
+    'Parents buy on behalf of children. Keep it under AED 200.'],
+  ['BACKTOSCHOOL', 'Back to school', 'العودة للمدرسة', 'seasonal', 9, null, false, [K_G, K_B],
+    'Body mists for teenagers, not perfume.'],
+
+  // --- corporate ---------------------------------------------------------
+  ['CLIENTGIFT', 'Client appreciation', 'هدايا العملاء', 'corporate', null, null, false, [A_W, A_M],
+    'Bulk orders with custom boxing. Best margin per hour of work you will find.'],
+  ['STAFFAWARD', 'Employee recognition', 'تكريم الموظفين', 'corporate', null, null, false, [A_W, A_M]],
+]
+
+export const giftEvents: GiftEvent[] = eventSeeds.map(
+  ([code, nameEn, nameAr, category, month, day, movableDate, suggestedAudiences, notes], i) => ({
+    id: `evt-${String(i + 1).padStart(2, '0')}`,
+    code,
+    nameEn,
+    nameAr,
+    category,
+    month,
+    day,
+    movableDate,
+    suggestedAudiences,
+    active: true,
+    notes,
+  })
+)
+
+const eventIdByCode = new Map(giftEvents.map((e) => [e.code, e.id]))
+
+// Recommendation rules. Deliberately not exhaustive — the coverage grid is
+// supposed to show real gaps so it is obvious where work is still needed.
+type RecSeed = [
+  eventCode: string, lifeStage: 'adult' | 'kid', gender: 'male' | 'female',
+  brackets: string[], products: string[], priority: number, note?: string
+]
+
+const ADULT_ALL = ['a18_29', 'a30_39', 'a40_49', 'a50_59', 'a60plus']
+const ADULT_MATURE = ['a40_49', 'a50_59', 'a60plus']
+const ADULT_YOUNG = ['a18_29', 'a30_39']
+const KID_OLDER = ['tween', 'teen']
+
+const recSeeds: RecSeed[] = [
+  // ---- Mother's Day: women only, and realistically thirty and up --------
+  ['MOTHERSDAY', 'adult', 'female', ['a30_39'], ['prd-03', 'prd-05', 'prd-06'], 1,
+    'Younger mothers lean floral rather than oud.'],
+  ['MOTHERSDAY', 'adult', 'female', ADULT_MATURE, ['prd-08', 'prd-11', 'prd-03'], 1,
+    'The expensive end sells here — it is the one day people overspend on their mother.'],
+
+  // ---- Father's Day -----------------------------------------------------
+  ['FATHERSDAY', 'adult', 'male', ADULT_MATURE, ['prd-02', 'prd-09', 'prd-04'], 1,
+    'Oud and attar. Fathers over fifty rarely want anything fresh.'],
+  ['FATHERSDAY', 'adult', 'male', ADULT_YOUNG, ['prd-04', 'prd-01'], 2],
+
+  // ---- Valentine's ------------------------------------------------------
+  ['VALENTINE', 'adult', 'female', ADULT_YOUNG, ['prd-05', 'prd-03', 'prd-06'], 1,
+    'Romantic florals. Gift wrap sells with almost every one of these.'],
+  ['VALENTINE', 'adult', 'male', ADULT_YOUNG, ['prd-04', 'prd-07', 'prd-01'], 1],
+
+  // ---- Birthday: the everyday earner ------------------------------------
+  ['BIRTHDAY', 'adult', 'female', ADULT_YOUNG, ['prd-06', 'prd-05', 'prd-10'], 1],
+  ['BIRTHDAY', 'adult', 'female', ADULT_MATURE, ['prd-03', 'prd-08'], 1],
+  ['BIRTHDAY', 'adult', 'male', ADULT_ALL, ['prd-04', 'prd-01', 'prd-07'], 1],
+  ['BIRTHDAY', 'kid', 'female', KID_OLDER, ['prd-10', 'prd-06'], 1,
+    'Body mist only. Nothing heavy on a child.'],
+  ['BIRTHDAY', 'kid', 'male', ['teen'], ['prd-07', 'prd-06'], 1],
+
+  // ---- Eid --------------------------------------------------------------
+  ['EIDFITR', 'adult', 'female', ADULT_ALL, ['prd-08', 'prd-03', 'prd-11'], 1,
+    'Push the parfum strength — Eid is when people buy the good bottle.'],
+  ['EIDFITR', 'adult', 'male', ADULT_ALL, ['prd-02', 'prd-09', 'prd-01'], 1],
+  ['EIDFITR', 'kid', 'female', KID_OLDER, ['prd-10'], 1],
+  ['EIDFITR', 'kid', 'male', ['teen'], ['prd-07'], 1],
+  ['EIDADHA', 'adult', 'female', ADULT_ALL, ['prd-11', 'prd-08'], 1],
+  ['EIDADHA', 'adult', 'male', ADULT_ALL, ['prd-09', 'prd-02'], 1],
+
+  // ---- Ramadan & Hajj ---------------------------------------------------
+  ['RAMADAN', 'adult', 'female', ADULT_ALL, ['prd-08', 'prd-11'], 1],
+  ['RAMADAN', 'adult', 'male', ADULT_ALL, ['prd-09', 'prd-01'], 1],
+  ['HAJJ', 'adult', 'male', ADULT_MATURE, ['prd-09', 'prd-02'], 1,
+    'Attar is the traditional welcome-home gift. Alcohol-free matters here.'],
+  ['HAJJ', 'adult', 'female', ADULT_MATURE, ['prd-09', 'prd-08'], 1],
+
+  // ---- Wedding & engagement --------------------------------------------
+  ['WEDDING', 'adult', 'female', ADULT_YOUNG, ['prd-08', 'prd-03', 'prd-05'], 1,
+    'Bridal. Sell as a pair with the groom bottle.'],
+  ['WEDDING', 'adult', 'male', ADULT_YOUNG, ['prd-02', 'prd-04'], 1],
+  ['ENGAGEMENT', 'adult', 'female', ADULT_YOUNG, ['prd-03', 'prd-05'], 1],
+  ['ENGAGEMENT', 'adult', 'male', ADULT_YOUNG, ['prd-01', 'prd-04'], 1],
+  ['ANNIVERSARY', 'adult', 'female', ADULT_ALL, ['prd-08', 'prd-11'], 1],
+  ['ANNIVERSARY', 'adult', 'male', ADULT_ALL, ['prd-02', 'prd-11'], 1],
+
+  // ---- Graduation -------------------------------------------------------
+  ['GRADUATION', 'adult', 'female', ['a18_29'], ['prd-06', 'prd-05'], 1,
+    'First proper perfume for a lot of them. Get the price point right and you have them for years.'],
+  ['GRADUATION', 'adult', 'male', ['a18_29'], ['prd-07', 'prd-04'], 1],
+  ['GRADUATION', 'kid', 'female', ['teen'], ['prd-10', 'prd-06'], 1],
+  ['GRADUATION', 'kid', 'male', ['teen'], ['prd-07'], 1],
+
+  // ---- New baby ---------------------------------------------------------
+  ['NEWBABY', 'adult', 'female', ADULT_YOUNG, ['prd-06', 'prd-10'], 1,
+    'For the mother. Clean musk — nothing that will clash around a newborn.'],
+
+  // ---- Corporate --------------------------------------------------------
+  ['CLIENTGIFT', 'adult', 'male', ADULT_ALL, ['prd-01', 'prd-09'], 1,
+    'Wholesale pricing, custom boxing, minimum 25 units.'],
+  ['CLIENTGIFT', 'adult', 'female', ADULT_ALL, ['prd-03', 'prd-06'], 1],
+  ['EMWOMEN', 'adult', 'female', ADULT_ALL, ['prd-03', 'prd-06', 'prd-10'], 1,
+    'Corporates order in bulk for female staff — quote the wholesale sheet.'],
+  ['NATIONALDAY', 'adult', 'male', ADULT_ALL, ['prd-01', 'prd-04'], 1],
+  ['NATIONALDAY', 'adult', 'female', ADULT_ALL, ['prd-03', 'prd-11'], 1],
+  ['STAFFAWARD', 'adult', 'female', ADULT_ALL, ['prd-06'], 1],
+  ['STAFFAWARD', 'adult', 'male', ADULT_ALL, ['prd-07'], 1],
+
+  // ---- Everyday thank-you tier -----------------------------------------
+  ['THANKYOU', 'adult', 'female', ADULT_ALL, ['prd-10', 'prd-06'], 1,
+    'Keep it under AED 300 or it feels like an obligation.'],
+  ['THANKYOU', 'adult', 'male', ADULT_ALL, ['prd-07'], 1],
+  ['TEACHERSDAY', 'adult', 'female', ADULT_ALL, ['prd-10', 'prd-06'], 1],
+  ['TEACHERSDAY', 'adult', 'male', ADULT_ALL, ['prd-07'], 1],
+  ['GETWELL', 'adult', 'female', ADULT_ALL, ['prd-10'], 1],
+  ['NEWJOB', 'adult', 'male', ADULT_YOUNG, ['prd-04', 'prd-07'], 1],
+  ['NEWJOB', 'adult', 'female', ADULT_YOUNG, ['prd-06', 'prd-03'], 1],
+  ['FAREWELL', 'adult', 'female', ADULT_ALL, ['prd-03'], 1],
+  ['FAREWELL', 'adult', 'male', ADULT_ALL, ['prd-01'], 1],
+  ['BACKTOSCHOOL', 'kid', 'female', KID_OLDER, ['prd-10'], 1],
+  ['BACKTOSCHOOL', 'kid', 'male', ['teen'], ['prd-07'], 1],
+  ['NEWYEAR', 'adult', 'female', ADULT_ALL, ['prd-11', 'prd-05'], 1],
+  ['NEWYEAR', 'adult', 'male', ADULT_ALL, ['prd-11', 'prd-04'], 1],
+  ['CHRISTMAS', 'adult', 'female', ADULT_ALL, ['prd-11', 'prd-03'], 1],
+  ['CHRISTMAS', 'adult', 'male', ADULT_ALL, ['prd-11', 'prd-04'], 1],
+  ['DIWALI', 'adult', 'female', ADULT_ALL, ['prd-08', 'prd-03'], 1],
+  ['DIWALI', 'adult', 'male', ADULT_ALL, ['prd-09', 'prd-01'], 1],
+  ['HOUSEWARM', 'adult', 'female', ADULT_ALL, ['prd-06', 'prd-10'], 1],
+]
+
+export const giftRecommendations: GiftRecommendation[] = recSeeds
+  .filter(([code]) => eventIdByCode.has(code))
+  .map(([code, lifeStage, gender, ageBrackets, productIds, priority, note], i) => ({
+    id: `rec-${String(i + 1).padStart(3, '0')}`,
+    eventId: eventIdByCode.get(code)!,
+    lifeStage,
+    gender,
+    ageBrackets: ageBrackets as GiftRecommendation['ageBrackets'],
+    productIds,
+    priority,
+    active: true,
+    note,
+  }))
+
+// ===========================================================================
 
 export const seedDatabase: Database = {
   materials,
@@ -1030,6 +1253,8 @@ export const seedDatabase: Database = {
   campaigns,
   leads,
   expenses,
+  giftEvents,
+  giftRecommendations,
 }
 
 export const seedCounts = () =>

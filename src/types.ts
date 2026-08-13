@@ -36,6 +36,26 @@ export interface Material {
 export type Concentration = 'Parfum' | 'EDP' | 'EDT' | 'Oil' | 'Mist'
 export type Family = 'oriental' | 'floral' | 'woody' | 'fresh' | 'musk'
 
+/**
+ * When a perfume is actually worn. This lives on the product, not on the gift
+ * rule — a scent intrinsically is an office scent or an evening scent, so
+ * tagging it once here means every gift recommendation inherits the full
+ * day / night / work breakdown for free.
+ */
+export type WearOccasion =
+  | 'work'      // office, meetings — moderate sillage
+  | 'daytime'   // casual, errands, brunch
+  | 'evening'   // dinner, going out
+  | 'formal'    // weddings, Eid, celebrations — the statement bottle
+  | 'outdoors'  // beach, sport, the heat
+  | 'majlis'    // hosting and gatherings — oud-forward, expected in the Gulf
+  | 'prayer'    // mosque and Friday prayer — alcohol-free only
+
+export type Season = 'all' | 'summer' | 'winter'
+
+/** How far it carries off the skin. */
+export type Sillage = 'subtle' | 'moderate' | 'strong'
+
 export interface Product {
   id: ID
   sku: string
@@ -51,6 +71,10 @@ export interface Product {
   reorderLevel: number
   status: 'active' | 'draft' | 'discontinued'
   launchDate: string // ISO date
+  /** Drives the day / night / work grouping in the gift finder. */
+  wearOccasions: WearOccasion[]
+  season: Season
+  sillage: Sillage
   descriptionEn?: string
   descriptionAr?: string
   topNotes?: string[]
@@ -262,6 +286,70 @@ export interface Expense {
   recurring: boolean
 }
 
+// ---------------------------------------------------------------------------
+// Gift occasions — the merchandising pyramid:
+//   occasion  →  who the gift is for  →  their age  →  which perfumes
+// This is what feeds the "recommended for Mother's Day" pages on the website.
+// ---------------------------------------------------------------------------
+
+export type EventCategory = 'personal' | 'religious' | 'national' | 'seasonal' | 'corporate'
+
+/** Adults and children are kept apart so the age ladders never mix. */
+export type LifeStage = 'adult' | 'kid'
+export type Gender = 'male' | 'female'
+
+export type AgeBracketId =
+  // children
+  | 'baby' | 'toddler' | 'child' | 'tween' | 'teen'
+  // adults
+  | 'a18_29' | 'a30_39' | 'a40_49' | 'a50_59' | 'a60plus'
+
+export interface AgeBracket {
+  id: AgeBracketId
+  lifeStage: LifeStage
+  min: number
+  /** null means open-ended — 60 and above. */
+  max: number | null
+}
+
+/** A segment is one square of the pyramid: adult female, kid boy, and so on. */
+export interface AudienceKey {
+  lifeStage: LifeStage
+  gender: Gender
+}
+
+export interface GiftEvent {
+  id: ID
+  code: string
+  nameEn: string
+  nameAr: string
+  category: EventCategory
+  /** Month 1–12 for fixed-date occasions; null for personal ones like birthdays. */
+  month: number | null
+  day: number | null
+  /** True when the date moves each year (Eid, Ramadan) — plan, don't hard-code. */
+  movableDate: boolean
+  /** Who normally receives a gift on this occasion — used to pre-fill the editor. */
+  suggestedAudiences: AudienceKey[]
+  active: boolean
+  notes?: string
+}
+
+export interface GiftRecommendation {
+  id: ID
+  eventId: ID
+  lifeStage: LifeStage
+  gender: Gender
+  /** One rule can cover several brackets at once, so the grid stays fillable. */
+  ageBrackets: AgeBracketId[]
+  /** Ordered — first is the hero product on the website. */
+  productIds: ID[]
+  /** Lower sorts first when several rules match the same shopper. */
+  priority: number
+  active: boolean
+  note?: string
+}
+
 export interface Settings {
   companyName: string
   companyNameAr: string
@@ -287,6 +375,8 @@ export interface Database {
   campaigns: Campaign[]
   leads: Lead[]
   expenses: Expense[]
+  giftEvents: GiftEvent[]
+  giftRecommendations: GiftRecommendation[]
 }
 
 export type CollectionName = keyof Database
