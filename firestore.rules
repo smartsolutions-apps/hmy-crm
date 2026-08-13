@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// ---------------------------------------------------------------------------
+// OPEN RULES — no login was requested, so anyone with the database URL can
+// read and write every record. That is fine while you are building, but it
+// means your customer list, prices and accounts are publicly reachable once
+// this is deployed.
+//
+// When you want to lock it down, turn on Firebase Authentication and replace
+// the two `true` values below with:  request.auth != null
+// ---------------------------------------------------------------------------
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only the collections this app actually uses.
+    match /{collection}/{docId} {
+      allow read, write: if collection in [
+        'materials', 'products', 'formulas', 'batches',
+        'customers', 'interactions', 'orders', 'suppliers',
+        'purchases', 'campaigns', 'leads', 'expenses'
+      ];
+    }
+  }
+}
