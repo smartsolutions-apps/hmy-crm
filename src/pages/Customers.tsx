@@ -105,7 +105,7 @@ export default function Customers() {
         <div className="flex flex-wrap gap-2 py-4 no-print">
           <div className="min-w-[200px] flex-1"><SearchInput value={search} onChange={setSearch} /></div>
           <Select
-            className="w-auto"
+            className="w-full sm:w-auto"
             value={type}
             onChange={setType}
             options={[
@@ -114,7 +114,7 @@ export default function Customers() {
             ]}
           />
           <Select
-            className="w-auto"
+            className="w-full sm:w-auto"
             value={city}
             onChange={setCity}
             options={[{ value: 'all', label: t('common.all') + ' — ' + t('common.city') }, ...cities.map((c) => ({ value: c, label: c }))]}

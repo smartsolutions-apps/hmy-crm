@@ -116,11 +116,11 @@ export default function Orders() {
       <Card bodyClassName="pt-0 pb-0">
         <div className="flex flex-wrap gap-2 py-4 no-print">
           <div className="min-w-[180px] flex-1"><SearchInput value={search} onChange={setSearch} /></div>
-          <Select className="w-auto" value={status} onChange={setStatus}
+          <Select className="w-full sm:w-auto" value={status} onChange={setStatus}
             options={[{ value: 'all', label: t('common.all') + ' — ' + t('common.status') }, ...STATUSES.map((s) => ({ value: s, label: t(`orders.status.${s}` as never) }))]} />
-          <Select className="w-auto" value={payment} onChange={setPayment}
+          <Select className="w-full sm:w-auto" value={payment} onChange={setPayment}
             options={[{ value: 'all', label: t('common.all') + ' — ' + t('orders.payment') }, ...PAY.map((s) => ({ value: s, label: t(`orders.pay.${s}` as never) }))]} />
-          <Select className="w-auto" value={channel} onChange={setChannel}
+          <Select className="w-full sm:w-auto" value={channel} onChange={setChannel}
             options={[{ value: 'all', label: t('common.all') + ' — ' + t('common.channel') }, ...CHANNELS.map((s) => ({ value: s, label: t(`orders.ch.${s}` as never) }))]} />
         </div>
 

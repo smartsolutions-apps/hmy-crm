@@ -108,7 +108,7 @@ export default function Products() {
         <div className="flex flex-wrap gap-2 py-4 no-print">
           <div className="min-w-[200px] flex-1"><SearchInput value={search} onChange={setSearch} /></div>
           <Select
-            className="w-auto"
+            className="w-full sm:w-auto"
             value={family}
             onChange={setFamily}
             options={[
@@ -119,7 +119,7 @@ export default function Products() {
             ]}
           />
           <Select
-            className="w-auto"
+            className="w-full sm:w-auto"
             value={status}
             onChange={setStatus}
             options={[

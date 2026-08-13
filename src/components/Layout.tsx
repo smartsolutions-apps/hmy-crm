@@ -137,7 +137,7 @@ export default function Layout() {
   }, [location.pathname])
 
   return (
-    <div className="min-h-screen flex bg-ink-50">
+    <div className="min-h-screen flex bg-ink-50 overflow-x-hidden">
       {/* desktop sidebar */}
       <aside className="hidden lg:flex w-60 shrink-0 flex-col bg-ink-950 no-print">
         <SidebarContent />
@@ -153,15 +153,18 @@ export default function Layout() {
         </div>
       )}
 
-      <div className="flex-1 min-w-0 flex flex-col">
-        <header className="sticky top-0 z-30 h-16 bg-white/90 backdrop-blur border-b border-ink-100 flex items-center gap-3 px-4 sm:px-6 no-print">
+      <div className="flex-1 min-w-0 flex flex-col overflow-x-hidden">
+        <header className="sticky top-0 z-30 h-14 sm:h-16 bg-white/90 backdrop-blur border-b border-ink-100 flex items-center gap-2 sm:gap-3 px-3 sm:px-6 no-print">
           <button
-            className="lg:hidden text-ink-600 hover:text-ink-900"
+            className="lg:hidden text-ink-600 hover:text-ink-900 p-2 -ms-2"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="menu"
           >
-            {mobileOpen ? <Menu className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Menu className="h-5 w-5" />
           </button>
+
+          {/* The brand is in the sidebar on desktop; on a phone it belongs here. */}
+          <span className="lg:hidden font-semibold text-ink-900 truncate">{t('app.name')}</span>
 
           <div className="flex-1" />
 
@@ -169,19 +172,22 @@ export default function Layout() {
 
           <button
             onClick={toggle}
-            className="btn-ghost !px-3 !py-1.5"
+            className="btn-ghost !px-2.5 !py-1.5"
             title={t('set.language')}
+            aria-label={t('set.language')}
           >
             <Languages className="h-4 w-4" />
-            <span className="font-medium">{lang === 'en' ? 'العربية' : 'English'}</span>
+            <span className="font-medium hidden sm:inline">
+              {lang === 'en' ? 'العربية' : 'English'}
+            </span>
           </button>
 
-          <div className="h-9 w-9 rounded-full bg-gold-100 text-gold-800 grid place-items-center text-sm font-semibold">
+          <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gold-100 text-gold-800 grid place-items-center text-sm font-semibold shrink-0">
             A
           </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 max-w-[1600px] w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-6 max-w-[1600px] w-full mx-auto min-w-0">
           <Outlet />
         </main>
 

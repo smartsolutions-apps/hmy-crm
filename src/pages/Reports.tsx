@@ -176,9 +176,9 @@ export default function Reports() {
         subtitle={t('rep.subtitle')}
         actions={
           <>
-            <Select className="w-auto" value={report} onChange={(v) => setReport(v as typeof report)}
+            <Select className="w-full sm:w-auto" value={report} onChange={(v) => setReport(v as typeof report)}
               options={REPORTS.map((r) => ({ value: r.value, label: t(r.labelKey) }))} />
-            <Select className="w-auto" value={period} onChange={setPeriod} options={periodOptions} />
+            <Select className="w-full sm:w-auto" value={period} onChange={setPeriod} options={periodOptions} />
             <button className="btn-ghost" onClick={() => window.print()}>
               <Printer className="h-4 w-4" />
               {t('common.print')}

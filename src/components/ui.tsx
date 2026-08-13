@@ -18,12 +18,17 @@ export function PageHeader({
   actions?: ReactNode
 }) {
   return (
-    <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-semibold text-ink-900">{title}</h1>
-        {subtitle && <p className="text-sm text-ink-500 mt-1">{subtitle}</p>}
+    <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-start sm:justify-between gap-3 mb-5">
+      <div className="min-w-0">
+        <h1 className="text-lg sm:text-2xl font-semibold text-ink-900">{title}</h1>
+        {subtitle && <p className="text-xs sm:text-sm text-ink-500 mt-1">{subtitle}</p>}
       </div>
-      {actions && <div className="flex items-center gap-2 no-print">{actions}</div>}
+      {actions && (
+        // Buttons share the width evenly on a phone rather than overflowing.
+        <div className="flex flex-wrap items-center gap-2 no-print [&>button]:flex-1 sm:[&>button]:flex-none [&>*]:min-w-0">
+          {actions}
+        </div>
+      )}
     </div>
   )
 }
@@ -79,13 +84,15 @@ export function StatCard({
     warn: 'text-amber-600',
   }[tone]
   return (
-    <div className="card card-pad">
+    <div className="card p-3 sm:p-5">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-xs font-medium text-ink-500">{label}</p>
-        {icon && <span className="text-ink-300">{icon}</span>}
+        <p className="text-[11px] sm:text-xs font-medium text-ink-500 leading-tight">{label}</p>
+        {icon && <span className="text-ink-300 hidden sm:block">{icon}</span>}
       </div>
-      <p className={clsx('mt-2 text-xl sm:text-2xl font-semibold tnum', toneClass)}>{value}</p>
-      {hint && <p className="mt-1 text-xs text-ink-400">{hint}</p>}
+      <p className={clsx('mt-1.5 sm:mt-2 text-lg sm:text-2xl font-semibold tnum truncate', toneClass)}>
+        {value}
+      </p>
+      {hint && <p className="mt-1 text-[11px] sm:text-xs text-ink-400 truncate">{hint}</p>}
     </div>
   )
 }
@@ -208,6 +215,10 @@ export interface Column<T> {
   sortValue?: (row: T) => string | number
   align?: 'start' | 'end' | 'center'
   className?: string
+  /** Left out of the phone card — for columns that are noise on a small screen. */
+  hideOnMobile?: boolean
+  /** Shown as the card headline instead of a labelled row. Defaults to the first column. */
+  primary?: boolean
 }
 
 export function DataTable<T extends { id: string }>({
@@ -225,6 +236,7 @@ export function DataTable<T extends { id: string }>({
   emptyMessage?: string
   footer?: ReactNode
 }) {
+  const { t } = useI18n()
   const [sort, setSort] = useState(initialSort ?? null)
 
   const sorted = useMemo(() => {
@@ -251,8 +263,88 @@ export function DataTable<T extends { id: string }>({
   const alignClass = (a?: Column<T>['align']) =>
     a === 'end' ? 'text-end' : a === 'center' ? 'text-center' : 'text-start'
 
+  const sortable = columns.filter((c) => c.sortValue)
+  const primaryCol = columns.find((c) => c.primary) ?? columns[0]
+  const detailCols = columns.filter((c) => c !== primaryCol && !c.hideOnMobile)
+
   return (
-    <div className="overflow-x-auto -mx-4 sm:-mx-5">
+    <>
+      {/* ---------- phone: one card per row ---------- */}
+      <div className="sm:hidden -mx-4 px-4 pb-4">
+        {sortable.length > 0 && (
+          <div className="flex items-center gap-2 py-3">
+            <label className="text-xs text-ink-500 shrink-0">{t('common.filter')}</label>
+            <select
+              className="input !py-1.5 text-xs"
+              value={sort?.key ?? ''}
+              onChange={(e) =>
+                setSort(e.target.value ? { key: e.target.value, dir: sort?.dir ?? 'desc' } : null)
+              }
+            >
+              <option value="">—</option>
+              {sortable.map((c) => (
+                <option key={c.key} value={c.key}>
+                  {c.header}
+                </option>
+              ))}
+            </select>
+            {sort && (
+              <button
+                className="btn-ghost !px-2.5 !py-1.5 shrink-0"
+                onClick={() => setSort({ key: sort.key, dir: sort.dir === 'asc' ? 'desc' : 'asc' })}
+                aria-label="toggle sort direction"
+              >
+                {sort.dir === 'asc' ? '↑' : '↓'}
+              </button>
+            )}
+          </div>
+        )}
+
+        <ul className="space-y-2.5">
+          {sorted.map((row) => (
+            <li key={row.id}>
+              <div
+                role={onRowClick ? 'button' : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          onRowClick(row)
+                        }
+                      }
+                    : undefined
+                }
+                className={clsx(
+                  'rounded-xl border border-ink-200 bg-white p-3.5',
+                  onRowClick && 'active:bg-gold-50 cursor-pointer'
+                )}
+              >
+                <div className="mb-2">{primaryCol.render(row)}</div>
+                <dl className="space-y-1.5">
+                  {detailCols.map((c) => {
+                    const content = c.render(row)
+                    if (content === null || content === undefined || content === '') return null
+                    return (
+                      <div key={c.key} className="flex items-start justify-between gap-3">
+                        <dt className="text-[11px] uppercase tracking-wide text-ink-400 shrink-0 pt-0.5">
+                          {c.header}
+                        </dt>
+                        <dd className="text-sm text-ink-800 text-end min-w-0">{content}</dd>
+                      </div>
+                    )
+                  })}
+                </dl>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* ---------- tablet and up: the real table ---------- */}
+      <div className="hidden sm:block overflow-x-auto -mx-4 sm:-mx-5">
       <table className="w-full min-w-[640px]">
         <thead>
           <tr>
@@ -290,7 +382,8 @@ export function DataTable<T extends { id: string }>({
         </tbody>
         {footer && <tfoot className="bg-ink-50/70 font-medium">{footer}</tfoot>}
       </table>
-    </div>
+      </div>
+    </>
   )
 }
 
@@ -327,25 +420,36 @@ export function Modal({
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-8 overflow-y-auto">
+    // On a phone this is a bottom sheet that owns the screen; from sm up it is
+    // a centred dialog.
+    <div className="fixed inset-0 z-50 flex items-end sm:items-start justify-center sm:p-8 sm:overflow-y-auto">
       <div className="fixed inset-0 bg-ink-950/40" onClick={onClose} />
       <div
         className={clsx(
-          'relative w-full bg-white rounded-xl shadow-xl my-4',
-          wide ? 'max-w-4xl' : 'max-w-lg'
+          'relative w-full bg-white shadow-xl flex flex-col',
+          'rounded-t-2xl sm:rounded-xl max-h-[92dvh] sm:max-h-none sm:my-4',
+          wide ? 'sm:max-w-4xl' : 'sm:max-w-lg'
         )}
         role="dialog"
         aria-modal="true"
       >
-        <header className="flex items-center justify-between gap-3 px-5 py-4 border-b border-ink-100">
-          <h2 className="text-base font-semibold text-ink-900">{title}</h2>
-          <button className="text-ink-400 hover:text-ink-700" onClick={onClose} aria-label="close">
+        {/* grab handle, phone only */}
+        <div className="sm:hidden pt-2 pb-1 flex justify-center shrink-0">
+          <span className="h-1 w-10 rounded-full bg-ink-200" />
+        </div>
+        <header className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3 sm:py-4 border-b border-ink-100 shrink-0">
+          <h2 className="text-base font-semibold text-ink-900 truncate">{title}</h2>
+          <button
+            className="text-ink-400 hover:text-ink-700 p-1 -m-1"
+            onClick={onClose}
+            aria-label="close"
+          >
             <X className="h-5 w-5" />
           </button>
         </header>
-        <div className="px-5 py-4 max-h-[70vh] overflow-y-auto">{children}</div>
+        <div className="px-4 sm:px-5 py-4 overflow-y-auto grow sm:max-h-[70vh]">{children}</div>
         {footer && (
-          <footer className="flex items-center justify-end gap-2 px-5 py-4 border-t border-ink-100">
+          <footer className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 px-4 sm:px-5 py-3 sm:py-4 border-t border-ink-100 shrink-0 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 [&>button]:w-full sm:[&>button]:w-auto">
             {footer}
           </footer>
         )}

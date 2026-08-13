@@ -5,9 +5,22 @@
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     @apply bg-ink-50 text-ink-900 font-sans;
+    /* Nothing should ever push the page sideways on a phone. */
+    overflow-x: hidden;
+  }
+  /* iOS zooms the whole page when you focus an input under 16px. */
+  @media (max-width: 639px) {
+    .input,
+    input.input,
+    select.input,
+    textarea.input {
+      font-size: 16px;
+    }
   }
   /* Cairo renders Arabic properly; Inter does not. */
   body.lang-ar {

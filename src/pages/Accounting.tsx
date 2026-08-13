@@ -94,7 +94,7 @@ export default function Accounting() {
         actions={
           <>
             <Select
-              className="w-auto"
+              className="w-full sm:w-auto"
               value={period}
               onChange={setPeriod}
               options={PERIODS.map((p) => ({ value: p.value, label: t(p.labelKey) }))}

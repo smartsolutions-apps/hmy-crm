@@ -121,7 +121,7 @@ export default function Materials() {
         <div className="flex flex-wrap gap-2 py-4 no-print">
           <div className="min-w-[200px] flex-1"><SearchInput value={search} onChange={setSearch} /></div>
           <Select
-            className="w-auto"
+            className="w-full sm:w-auto"
             value={category}
             onChange={setCategory}
             options={[
