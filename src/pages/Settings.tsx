@@ -13,11 +13,19 @@ export default function SettingsPage() {
 
   const [draft, setDraft] = useState<SettingsType>(settings)
   const [seeding, setSeeding] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
   const [seedMsg, setSeedMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
   const [progress, setProgress] = useState<string[]>([])
 
   const counts = seedCounts()
   const isRemote = source === 'firestore'
+
+  // How much is genuinely in the database right now, across every collection.
+  const liveRecords = Object.values(db).reduce(
+    (n, rows) => n + (Array.isArray(rows) ? rows.length : 0),
+    0
+  )
+  const hasData = liveRecords > 0
 
   const runSeed = async () => {
     setSeeding(true)
@@ -112,9 +120,20 @@ export default function SettingsPage() {
               </div>
             </div>
             {isRemote && (
-              <button className="btn-ghost mt-3" onClick={() => void refresh()}>
-                <RefreshCw className="h-4 w-4" />
-                {t('common.loading')}
+              <button
+                className="btn-ghost mt-3"
+                disabled={refreshing}
+                onClick={async () => {
+                  setRefreshing(true)
+                  try {
+                    await refresh()
+                  } finally {
+                    setRefreshing(false)
+                  }
+                }}
+              >
+                <RefreshCw className={refreshing ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />
+                {refreshing ? t('set.refreshing') : t('set.refresh')}
               </button>
             )}
           </Card>
@@ -125,6 +144,29 @@ export default function SettingsPage() {
               <StatCard label={t('nav.customers')} value={num(db.customers.length)} />
               <StatCard label={t('nav.orders')} value={num(db.orders.length)} />
             </div>
+
+            {/* The dataset only ever needs loading into an empty database.
+                Offering the button once records exist invites someone to
+                overwrite live data by accident. */}
+            {hasData ? (
+              <div className="flex items-start gap-2.5 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2.5 mb-4">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-emerald-900">{t('set.alreadyLoaded')}</p>
+                  <p className="text-xs text-emerald-700 mt-0.5">
+                    {t('set.alreadyLoadedDesc', { n: num(liveRecords) })}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-start gap-2.5 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2.5 mb-4">
+                <Upload className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-amber-900">{t('set.emptyDb')}</p>
+                  <p className="text-xs text-amber-700 mt-0.5">{t('set.emptyDbDesc')}</p>
+                </div>
+              </div>
+            )}
 
             <p className="text-sm text-ink-600 mb-3">{t('set.seedDesc')}</p>
 
@@ -137,10 +179,12 @@ export default function SettingsPage() {
               ))}
             </ul>
 
-            <button className="btn-primary w-full" onClick={runSeed} disabled={seeding}>
-              <Upload className="h-4 w-4" />
-              {seeding ? t('set.seedRunning') : isRemote ? t('set.seed') : t('set.reset')}
-            </button>
+            {!hasData && (
+              <button className="btn-primary w-full" onClick={runSeed} disabled={seeding}>
+                <Upload className="h-4 w-4" />
+                {seeding ? t('set.seedRunning') : t('set.seed')}
+              </button>
+            )}
 
             {progress.length > 0 && (
               <ul className="mt-3 text-xs text-ink-400 space-y-0.5 max-h-32 overflow-y-auto tnum">

@@ -510,7 +510,16 @@ export const dictionary = {
     'set.dataSource': 'Data source',
     'set.seed': 'Load demo data',
     'set.seedDesc':
-      'Writes the full demo dataset to your database — products, materials, formulas, batches, customers, orders, suppliers, campaigns and expenses. Existing records with the same IDs are overwritten.',
+      'What the demo dataset contains. It only needs loading once, into an empty database.',
+    'set.alreadyLoaded': 'Your database is already loaded',
+    'set.alreadyLoadedDesc':
+      '{n} records are live in Firestore. There is nothing to load — this is the data you are looking at throughout the app.',
+    'set.emptyDb': 'Your database is empty',
+    'set.emptyDbDesc':
+      'Load the demo dataset to fill it. This writes every collection in one go and takes a few seconds.',
+    'set.refresh': 'Reload from Firestore',
+    'set.refreshing': 'Reloading…',
+    'set.refreshed': 'Up to date.',
     'set.seedRunning': 'Writing…',
     'set.seedDone': 'Demo data loaded.',
     'set.seedFailed': 'Could not write. Check your Firebase config.',
@@ -1018,7 +1027,16 @@ export const dictionary = {
     'set.dataSource': 'مصدر البيانات',
     'set.seed': 'تحميل البيانات التجريبية',
     'set.seedDesc':
-      'يكتب مجموعة البيانات التجريبية كاملة في قاعدة بياناتك — المنتجات والمواد والتركيبات والدفعات والعملاء والطلبات والموردين والحملات والمصروفات. السجلات ذات المعرّفات نفسها سيتم استبدالها.',
+      'محتويات مجموعة البيانات التجريبية. تحتاج للتحميل مرة واحدة فقط، في قاعدة بيانات فارغة.',
+    'set.alreadyLoaded': 'قاعدة بياناتك محمّلة بالفعل',
+    'set.alreadyLoadedDesc':
+      '{n} سجل موجود فعليًا في Firestore. لا شيء للتحميل — هذه هي البيانات التي تراها في كل أنحاء التطبيق.',
+    'set.emptyDb': 'قاعدة بياناتك فارغة',
+    'set.emptyDbDesc':
+      'حمّل البيانات التجريبية لملئها. سيكتب كل المجموعات دفعة واحدة ويستغرق بضع ثوانٍ.',
+    'set.refresh': 'إعادة التحميل من Firestore',
+    'set.refreshing': 'جارٍ إعادة التحميل…',
+    'set.refreshed': 'محدّث.',
     'set.seedRunning': 'جارٍ الكتابة…',
     'set.seedDone': 'تم تحميل البيانات التجريبية.',
     'set.seedFailed': 'تعذّرت الكتابة. تحقق من إعدادات Firebase.',

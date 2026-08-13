@@ -89,10 +89,28 @@ export async function loadFromFirestore(): Promise<Database> {
   return db
 }
 
+/**
+ * Firestore rejects `undefined` outright, and most of our records have optional
+ * fields (a product with no Arabic description, a batch with no notes). Strip
+ * them recursively before every write — otherwise an ordinary save throws.
+ */
+function stripUndefined<T>(value: T): T {
+  if (Array.isArray(value)) return value.map(stripUndefined) as unknown as T
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {}
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (v === undefined) continue
+      out[k] = stripUndefined(v)
+    }
+    return out as T
+  }
+  return value
+}
+
 export async function upsertDoc(name: CollectionName, record: { id: string }) {
   if (!firestore) return
   const { id, ...rest } = record
-  await setDoc(doc(firestore, name, id), rest, { merge: true })
+  await setDoc(doc(firestore, name, id), stripUndefined(rest), { merge: true })
 }
 
 export async function removeDoc(name: CollectionName, id: string) {
@@ -111,7 +129,7 @@ export async function writeAll(data: Database, onProgress?: (msg: string) => voi
       const batch = writeBatch(firestore)
       for (const row of chunk) {
         const { id, ...rest } = row
-        batch.set(doc(firestore, name, id), rest)
+        batch.set(doc(firestore, name, id), stripUndefined(rest))
       }
       await batch.commit()
     }
